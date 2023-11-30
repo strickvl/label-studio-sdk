@@ -87,10 +87,10 @@ class Filters:
         dict
         """
         return {
-            "filter": 'filter:' + name,
+            "filter": f'filter:{name}',
             "operator": operator,
             "type": column_type,
-            "value": value
+            "value": value,
         }
 
     @staticmethod
@@ -229,7 +229,7 @@ class Column:
             Filter name for task data
 
         """
-        return "tasks:data." + task_field
+        return f"tasks:data.{task_field}"
 
 
 def _test():

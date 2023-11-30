@@ -67,8 +67,11 @@ class Client(object):
         csrf_token = self.session.cookies.get('csrftoken', None)
         login_data = dict(**credentials.dict(), csrfmiddlewaretoken=csrf_token)
         self.session.post(login_url, data=login_data, headers=dict(Referer=self.url)).raise_for_status()
-        api_key = self.session.get(self.get_url("/api/current-user/token")).json().get("token")
-        return api_key
+        return (
+            self.session.get(self.get_url("/api/current-user/token"))
+            .json()
+            .get("token")
+        )
 
     def check_connection(self):
         """ Call Label Studio /health endpoint to check the connection to the server.
@@ -102,10 +105,12 @@ class Client(object):
         from .project import Project
         response = self.make_request('GET', '/api/projects', params={'page_size': 10000000})
         if response.status_code == 200:
-            projects = []
-            for data in response.json()['results']:
-                projects.append(Project._create_from_id(client=self, project_id=data['id'], params=data))
-            return projects
+            return [
+                Project._create_from_id(
+                    client=self, project_id=data['id'], params=data
+                )
+                for data in response.json()['results']
+            ]
 
     def start_project(self, **kwargs):
         """ Create a new project instance.
