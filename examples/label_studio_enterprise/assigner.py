@@ -83,7 +83,7 @@ class BatchAssigner:
         task_ids = result['tasks']
 
         if not task_ids:
-            print(f'No tasks found')
+            print('No tasks found')
             return False
 
         # call assign API

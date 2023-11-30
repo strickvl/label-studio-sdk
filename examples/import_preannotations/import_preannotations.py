@@ -62,8 +62,14 @@ project.import_tasks(
 
 project.import_tasks(
     [
-        {'image': f'https://data.heartex.net/open-images/train_0/mini/0045dd96bf73936c.jpg', 'pet': 'Dog'},
-        {'image': f'https://data.heartex.net/open-images/train_0/mini/0083d02f6ad18b38.jpg', 'pet': 'Cat'},
+        {
+            'image': 'https://data.heartex.net/open-images/train_0/mini/0045dd96bf73936c.jpg',
+            'pet': 'Dog',
+        },
+        {
+            'image': 'https://data.heartex.net/open-images/train_0/mini/0083d02f6ad18b38.jpg',
+            'pet': 'Cat',
+        },
     ],
     preannotated_from_fields=['pet'],
 )

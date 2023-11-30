@@ -255,8 +255,8 @@ class Project(Client):
     def _get_param(self, param_name):
         if param_name not in self.params:
             self.update_params()
-            if param_name not in self.params:
-                raise LabelStudioAttributeError(f'Project "{param_name}" field is not set')
+        if param_name not in self.params:
+            raise LabelStudioAttributeError(f'Project "{param_name}" field is not set')
         return self.params[param_name]
 
     def get_params(self):
@@ -1056,8 +1056,10 @@ class Project(Client):
         model_versions = self.get_model_versions()
         params = self.get_params()
         tasks_number = params['task_number']
-        coverage = {model_version: count / tasks_number for model_version, count in model_versions.items()}
-        return coverage
+        return {
+            model_version: count / tasks_number
+            for model_version, count in model_versions.items()
+        }
 
     def get_predictions_conflict(self):
         raise NotImplementedError
@@ -1118,9 +1120,9 @@ class Project(Client):
 
         """
         if os.path.isfile(google_application_credentials):
-            with open(google_application_credentials) as f:
-                google_application_credentials = f.read()
-
+            google_application_credentials = Path(
+                google_application_credentials
+            ).read_text()
         payload = {
             'bucket': bucket,
             'project': self.id,
@@ -1181,9 +1183,9 @@ class Project(Client):
 
         """
         if os.path.isfile(google_application_credentials):
-            with open(google_application_credentials) as f:
-                google_application_credentials = f.read()
-
+            google_application_credentials = Path(
+                google_application_credentials
+            ).read_text()
         payload = {
             'bucket': bucket,
             'prefix': prefix,
@@ -1507,7 +1509,7 @@ class Project(Client):
         list[dict]
             List of dicts with counter of created assignments
         """
-        assert len(users) > 0, 'Users list is empty.'
+        assert users, 'Users list is empty.'
         assert len(users) >= overlap, 'Overlap is more than number of users.'
         # check if users are int and not User objects
         if isinstance(users[0], int):

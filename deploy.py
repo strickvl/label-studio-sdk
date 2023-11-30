@@ -23,8 +23,8 @@ class Deployment:
             self.s3.meta.client.upload_file(
                 import_file,
                 'labelstud.io',
-                'sdk/' + name,
-                ExtraArgs={'ContentType': "text/html", 'ACL': "public-read"}
+                f'sdk/{name}',
+                ExtraArgs={'ContentType': "text/html", 'ACL': "public-read"},
             )
         except ClientError as e:
             logging.error(e)
@@ -32,7 +32,7 @@ class Deployment:
         return True
 
     def upload_dir(self, root_dir):
-        logger.info('Copy ' + root_dir)
+        logger.info(f'Copy {root_dir}')
         for path in os.listdir(root_dir):
             if os.path.isdir(path):
                 continue

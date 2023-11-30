@@ -9,11 +9,10 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS
 
 google_client = google_storage.Client()
 bucket = google_client.get_bucket(BUCKET_NAME)
-tasks = []
-for filename in bucket.list_blobs():
-    tasks.append({'image': f'gs://{BUCKET_NAME}/{filename}'})
-
-
+tasks = [
+    {'image': f'gs://{BUCKET_NAME}/{filename}'}
+    for filename in bucket.list_blobs()
+]
 LABEL_STUDIO_URL = 'http://localhost:8080'
 API_KEY = '91b3b61589784ed069b138eae3d5a5fe1e909f57'
 
